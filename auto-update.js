@@ -1,13 +1,8 @@
-// auto-update.js - Fetches REAL football matches from football-data.org + AI predictions
+// auto-update.js - Fetches REAL football matches from TheSportsDB.com + AI predictions
 
 const fs = require('fs').promises;
 const path = require('path');
 const fetch = require('node-fetch');
-
-// 🔑 REPLACE WITH YOUR FOOTBALL-DATA.ORG API KEY
-const API_KEY = 'a28213ba3ab949529f34b1f34cb84af8'; // ← Paste your key here
-
-const API_URL = 'https://api.football-data.org/v4';
 
 // Mock bets for AI to assign
 const BETS = ["Over 2.5", "BTTS", "Double Chance", "Draw or Away", "Handicap -1"];
@@ -34,48 +29,25 @@ function generateAIPrediction(homeTeam, awayTeam) {
 async function fetchTodayMatches() {
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   
-  // Get matches for today from top 5 leagues
-  const leagues = ['PL', 'BL1', 'LL', 'SA', 'FL1']; // Premier League, Bundesliga, La Liga, Serie A, Ligue 1
+  // Get matches for today from top leagues
+  const leagues = ['English Premier League', 'Spanish La Liga', 'German Bundesliga', 'Italian Serie A', 'French Ligue 1'];
   let allMatches = [];
 
   for (const league of leagues) {
-    const url = `${API_URL}/matches?competition=${league}&dateFrom=${today}&dateTo=${today}`;
-    
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-Response-Control': 'minified',
-        'X-Target-Distribution': 'prod',
-        'X-RapidAPI-Key': API_KEY,
-        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-      }
-    };
-
     try {
-      // Note: football-data.org uses different headers
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'X-Response-Control': 'minified',
-          'X-Target-Distribution': 'prod'
-        }
-      });
+      const url = `https://www.thesportsdb.com/api/v1/json/3/searchevents.php?e=${encodeURIComponent(league)}&d=${today}`;
       
-      if (response.status === 429) {
-        console.log("Rate limited, using fallback");
-        return generateFallbackMatches();
-      }
-      
+      const response = await fetch(url);
       const data = await response.json();
       
-      if (data.matches && data.matches.length > 0) {
-        const matches = data.matches.map(game => {
-          const ai = generateAIPrediction(game.homeTeam.name, game.awayTeam.name);
+      if (data.events && data.events.length > 0) {
+        const matches = data.events.map(game => {
+          const ai = generateAIPrediction(game.strHomeTeam, game.strAwayTeam);
           return {
-            home: game.homeTeam.name,
-            away: game.awayTeam.name,
-            time: game.utcDate,
-            league: data.competition.name,
+            home: game.strHomeTeam,
+            away: game.strAwayTeam,
+            time: game.dateEvent,
+            league: league,
             ...ai
           };
         });
