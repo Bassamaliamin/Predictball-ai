@@ -5,6 +5,24 @@ body {
   padding: 0;
 }
 
+/* ✨ Stylish App Header */
+.app-header {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.app-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -14,7 +32,7 @@ body {
 /* Tabs */
 .tabs {
   display: flex;
-  margin-bottom: 20px;
+  margin: 20px 0;
   border-bottom: 2px solid #e0e0e0;
 }
 
@@ -44,18 +62,12 @@ body {
   display: block;
 }
 
-h1 {
-  color: #2c3e50;
-  text-align: center;
-  font-size: 24px;
-  margin: 20px 0 10px;
-}
-
 .subheader {
   text-align: center;
   color: #7f8c8d;
-  margin-bottom: 25px;
+  margin: 20px 0 25px;
   font-size: 16px;
+  font-weight: 600;
 }
 
 .prediction {
@@ -81,17 +93,66 @@ h1 {
   border: 1px dashed #e67e22;
 }
 
-.subscribe-btn {
-  display: block;
-  width: 100%;
+/* 💰 M-Pesa Buttons */
+.pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.mpesa-btn {
   padding: 16px;
-  background: #27ae60;
+  background: #e67e22;
   color: white;
   border: none;
   border-radius: 12px;
   font-size: 18px;
   font-weight: bold;
-  margin: 30px 0;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.mpesa-btn:hover {
+  background: #d35400;
+}
+
+.mpesa-btn.monthly {
+  background: #8e44ad;
+}
+
+.mpesa-btn.monthly:hover {
+  background: #7d3c98;
+}
+
+/* 📲 M-Pesa Instructions */
+.mpesa-instructions {
+  background: #e8f4fd;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 1px solid #3498db;
+}
+
+.mpesa-instructions h3 {
+  color: #2980b9;
+  margin-top: 0;
+}
+
+.mpesa-instructions.hidden {
+  display: none;
+}
+
+.close-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 15px;
   cursor: pointer;
 }
 
@@ -99,5 +160,7 @@ h1 {
   text-align: center;
   font-size: 12px;
   color: #95a5a6;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
