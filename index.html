@@ -5,100 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PredictBall AI</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('free')">Free Predictions</button>
-      <button class="tab" onclick="showTab('premium')">Premium Predictions</button>
-    </div>
-
-    <!-- Free Predictions (Default) -->
-    <div id="free" class="tab-content active">
-      <h1>⚡ PredictBall AI</h1>
-      <p class="subheader">Today’s Free Predictions (Max 5)</p>
-
-      <div class="prediction">
-        <h3>1. Liverpool vs Arsenal</h3>
-        <p>🎯 Prediction: Draw (78%)</p>
-        <p>💡 Recommended Bet: BTTS</p>
-        <p>💰 Odds: 3.20 - 3.50</p>
-      </div>
-
-      <div class="prediction">
-        <h3>2. Real Madrid vs Barcelona</h3>
-        <p>🎯 Prediction: Home Win (85%)</p>
-        <p>💡 Recommended Bet: Over 2.5</p>
-        <p>💰 Odds: 2.10 - 2.30</p>
-      </div>
-
-      <div class="prediction">
-        <h3>3. Bayern Munich vs Dortmund</h3>
-        <p>🎯 Prediction: Home Win (82%)</p>
-        <p>💡 Recommended Bet: -1 Handicap</p>
-        <p>💰 Odds: 2.40 - 2.60</p>
-      </div>
-
-      <div class="prediction">
-        <h3>4. PSG vs Marseille</h3>
-        <p>🎯 Prediction: Home Win (79%)</p>
-        <p>💡 Recommended Bet: Over 3.5</p>
-        <p>💰 Odds: 2.80 - 3.10</p>
-      </div>
-
-      <div class="prediction">
-        <h3>5. Juventus vs AC Milan</h3>
-        <p>🎯 Prediction: Away Win (75%)</p>
-        <p>💡 Recommended Bet: Double Chance</p>
-        <p>💰 Odds: 2.90 - 3.20</p>
-      </div>
-    </div>
-
-    <!-- Premium Predictions (Hidden by default) -->
-    <div id="premium" class="tab-content">
-      <h1>💎 Premium Predictions</h1>
-      <p class="subheader">Elite AI Picks (Max 3) — Subscribe to Unlock</p>
-
-      <div class="prediction locked">
-        <h3>🔒 Premium Pick 1</h3>
-        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
-        <p>💰 EV Score: +15.2%</p>
-      </div>
-
-      <div class="prediction locked">
-        <h3>🔒 Premium Pick 2</h3>
-        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
-        <p>💰 EV Score: +18.7%</p>
-      </div>
-
-      <div class="prediction locked">
-        <h3>🔒 Premium Pick 3</h3>
-        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
-        <p>💰 EV Score: +22.1%</p>
-      </div>
-
-      <button class="subscribe-btn">💳 Subscribe Now — $4.99/week</button>
-    </div>
-
-    <p class="footer">Updated: September 23, 2025 • Powered by AI</p>
+  <!-- App Header -->
+  <div class="app-header">
+    <h1 class="app-title">⚡ PredictBall AI</h1>
   </div>
 
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('free')">Free Predictions</button>
+    <button class="tab" onclick="showTab('premium')">Premium Predictions</button>
+  </div>
+
+  <!-- Free Predictions -->
+  <div id="free" class="tab-content active">
+    <p class="subheader">Yesterday’s Record: ✅ 4 Wins | ❌ 1 Loss</p>
+
+    <div class="prediction">
+      <h3>1. Liverpool vs Arsenal</h3>
+      <p>🎯 Prediction: Draw (78%) → ✅ CORRECT</p>
+      <p>💡 Recommended Bet: BTTS</p>
+    </div>
+
+    <div class="prediction">
+      <h3>2. Real Madrid vs Barcelona</h3>
+      <p>🎯 Prediction: Home Win (85%) → ✅ CORRECT</p>
+      <p>💡 Recommended Bet: Over 2.5</p>
+    </div>
+
+    <div class="prediction">
+      <h3>3. Bayern Munich vs Dortmund</h3>
+      <p>🎯 Prediction: Home Win (82%) → ✅ CORRECT</p>
+      <p>💡 Recommended Bet: -1 Handicap</p>
+    </div>
+
+    <div class="prediction">
+      <h3>4. PSG vs Marseille</h3>
+      <p>🎯 Prediction: Home Win (79%) → ❌ WRONG</p>
+      <p>💡 Recommended Bet: Over 3.5</p>
+    </div>
+
+    <div class="prediction">
+      <h3>5. Juventus vs AC Milan</h3>
+      <p>🎯 Prediction: Away Win (75%) → ✅ CORRECT</p>
+      <p>💡 Recommended Bet: Double Chance</p>
+    </div>
+  </div>
+
+  <!-- Premium Predictions -->
+  <div id="premium" class="tab-content">
+    <p class="subheader">Yesterday’s Premium Record: ✅ 3 Wins | ❌ 0 Loss</p>
+
+    <div class="prediction locked">
+      <h3>🔒 Premium Pick 1</h3>
+      <p>Subscribe to unlock elite AI predictions.</p>
+      <p>💰 EV Score: +15.2%</p>
+    </div>
+
+    <div class="prediction locked">
+      <h3>🔒 Premium Pick 2</h3>
+      <p>Subscribe to unlock elite AI predictions.</p>
+      <p>💰 EV Score: +18.7%</p>
+    </div>
+
+    <div class="prediction locked">
+      <h3>🔒 Premium Pick 3</h3>
+      <p>Subscribe to unlock elite AI predictions.</p>
+      <p>💰 EV Score: +22.1%</p>
+    </div>
+
+    <div class="pricing">
+      <button class="mpesa-btn" onclick="showMpesa('weekly')">📲 Pay Weekly: Ksh.150 via M-Pesa</button>
+      <button class="mpesa-btn monthly" onclick="showMpesa('monthly')">📲 Pay Monthly: Ksh.500 via M-Pesa</button>
+    </div>
+
+    <div id="mpesa-instructions" class="mpesa-instructions hidden">
+      <h3>📲 How to Pay</h3>
+      <p>1. Open M-Pesa on your phone</p>
+      <p>2. Go to <strong>Lipa Na M-Pesa → Paybill</strong></p>
+      <p>3. Enter Business Number: <strong>123456</strong></p>
+      <p>4. Enter Account Number: <strong>YOUR_PHONE</strong></p>
+      <p>5. Enter Amount: <span id="amount">Ksh.150</span></p>
+      <p>6. Enter M-Pesa PIN</p>
+      <p>✅ You’ll get SMS confirmation. Access granted within 5 mins!</p>
+      <button class="close-btn" onclick="hideMpesa()">✕ Close</button>
+    </div>
+  </div>
+
+  <p class="footer">Updated: April 5, 2025 • Powered by AI</p>
+
+  <!-- SWIPE + MPESA SCRIPT -->
   <script>
+    let startX = null;
+
+    function handleTouchStart(evt) {
+      startX = evt.touches[0].clientX;
+    }
+
+    function handleTouchMove(evt) {
+      if (!startX) return;
+      let currentX = evt.touches[0].clientX;
+      let diff = startX - currentX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          showTab('premium');
+        } else {
+          showTab('free');
+        }
+        startX = null;
+      }
+    }
+
+    document.addEventListener('touchstart', handleTouchStart, false);
+    document.addEventListener('touchmove', handleTouchMove, false);
+
     function showTab(tabName) {
-      // Hide all tab content
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      // Deactivate all tabs
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      // Show selected tab content
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+
       document.getElementById(tabName).classList.add('active');
-      // Activate selected tab button
-      event.target.classList.add('active');
+      if (tabName === 'free') {
+        document.querySelectorAll('.tab')[0].classList.add('active');
+      } else {
+        document.querySelectorAll('.tab')[1].classList.add('active');
+      }
+    }
+
+    function showMpesa(plan) {
+      const instructions = document.getElementById('mpesa-instructions');
+      const amountSpan = document.getElementById('amount');
+      amountSpan.textContent = plan === 'weekly' ? 'Ksh.150' : 'Ksh.500';
+      instructions.classList.remove('hidden');
+    }
+
+    function hideMpesa() {
+      document.getElementById('mpesa-instructions').classList.add('hidden');
     }
   </script>
 </body>
