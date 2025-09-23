@@ -1,0 +1,12 @@
+{
+  "name": "predictball-ai",
+  "version": "1.0.0",
+  "description": "AI Football Predictions",
+  "main": "auto-update.js",
+  "scripts": {
+    "update": "node auto-update.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
