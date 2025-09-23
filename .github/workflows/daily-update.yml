@@ -1,0 +1,31 @@
+name: Daily Prediction Update
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Runs daily at 6 AM UTC (9 AM EAT)
+  workflow_dispatch:     # Allows manual run
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm init -y
+
+      - name: Run auto-update script
+        run: node auto-update.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add index.html
+          git commit -m "🤖 Auto-update predictions for $(date +%Y-%m-%d)" || echo "No changes to commit"
+          git push
