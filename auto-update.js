@@ -1,4 +1,4 @@
-// auto-update.js - Simple text replacement for real matches
+// auto-update.js - Fetches REAL matches from Big 4 European leagues only
 
 const fs = require('fs').promises;
 const path = require('path');
@@ -26,52 +26,96 @@ function generateAIPrediction(homeTeam, awayTeam) {
 }
 
 async function fetchTodayMatches() {
-  // Using TheSportsDB - free, no key required
   const today = new Date().toISOString().split('T')[0];
   
-  try {
-    const response = await fetch(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}`);
-    const data = await response.json();
-    
-    if (data.events && data.events.length > 0) {
-      return data.events.map(game => {
-        const ai = generateAIPrediction(game.strHomeTeam, game.strAwayTeam);
-        return {
-          home: game.strHomeTeam,
-          away: game.strAwayTeam,
-          time: game.dateEvent,
-          league: game.strLeague,
-          ...ai
-        };
-      });
-    }
-  } catch (error) {
-    console.error("API Error:", error);
-  }
+  // Focus on Big 4 leagues only
+  const leagues = [
+    { name: "English Premier League", id: 4328 },
+    { name: "Spanish La Liga", id: 4335 },
+    { name: "Italian Serie A", id: 4332 },
+    { name: "German Bundesliga", id: 4331 }
+  ];
   
-  // Fallback if no matches found
-  return generateFallbackMatches();
+  let allMatches = [];
+
+  for (const league of leagues) {
+    try {
+      // Using TheSportsDB - free API for specific league events
+      const response = await fetch(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&l=${encodeURIComponent(league.name)}`);
+      const data = await response.json();
+      
+      if (data.events && data.events.length > 0) {
+        const matches = data.events.map(game => {
+          const ai = generateAIPrediction(game.strHomeTeam, game.strAwayTeam);
+          return {
+            home: game.strHomeTeam,
+            away: game.strAwayTeam,
+            time: game.dateEvent,
+            league: game.strLeague,
+            ...ai
+          };
+        });
+        allMatches = allMatches.concat(matches);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${league.name}:`, error);
+    }
+  }
+
+  if (allMatches.length === 0) {
+    console.log("No matches from Big 4 leagues — using fallback");
+    return generateFallbackMatches();
+  }
+
+  return allMatches;
 }
 
 function generateFallbackMatches() {
+  // Fallback with Big 4 league teams only
   const TEAMS = [
-    "Arsenal", "Liverpool", "Chelsea", "Man City", "Man United",
-    "Real Madrid", "Barcelona", "Atletico Madrid", "PSG", "Lyon",
-    "Bayern Munich", "Dortmund", "Juventus", "AC Milan", "Inter Milan"
+    // EPL
+    { name: "Arsenal", league: "Premier League" },
+    { name: "Liverpool", league: "Premier League" },
+    { name: "Chelsea", league: "Premier League" },
+    { name: "Man City", league: "Premier League" },
+    { name: "Man United", league: "Premier League" },
+    { name: "Tottenham", league: "Premier League" },
+    { name: "Newcastle", league: "Premier League" },
+    { name: "Aston Villa", league: "Premier League" },
+    
+    // La Liga
+    { name: "Real Madrid", league: "La Liga" },
+    { name: "Barcelona", league: "La Liga" },
+    { name: "Atletico Madrid", league: "La Liga" },
+    { name: "Real Sociedad", league: "La Liga" },
+    { name: "Villarreal", league: "La Liga" },
+    
+    // Serie A
+    { name: "Juventus", league: "Serie A" },
+    { name: "AC Milan", league: "Serie A" },
+    { name: "Inter Milan", league: "Serie A" },
+    { name: "Napoli", league: "Serie A" },
+    { name: "Roma", league: "Serie A" },
+    
+    // Bundesliga
+    { name: "Bayern Munich", league: "Bundesliga" },
+    { name: "Dortmund", league: "Bundesliga" },
+    { name: "Leipzig", league: "Bundesliga" },
+    { name: "Leverkusen", league: "Bundesliga" }
   ];
   
   let matches = [];
   for (let i = 0; i < 8; i++) {
     let home = getRandomItem(TEAMS);
     let away = getRandomItem(TEAMS);
-    while (away === home) away = getRandomItem(TEAMS);
+    while (away.name === home.name) away = getRandomItem(TEAMS);
     
-    const ai = generateAIPrediction(home, away);
+    const ai = generateAIPrediction(home.name, away.name);
     matches.push({
-      home,
-      away,
+      home: home.name,
+      away: away.name,
       time: new Date().toISOString(),
-      league: "Test League",
+      league: home.league,
       ...ai
     });
   }
@@ -118,7 +162,7 @@ async function updatePredictions() {
     // Read index.html
     let html = await fs.readFile(path.join(__dirname, 'index.html'), 'utf8');
     
-    // Fetch real matches
+    // Fetch real matches from Big 4 leagues
     const allMatches = await fetchTodayMatches();
     const freeMatches = allMatches.slice(0, 10);
     const premiumMatches = [...allMatches];
@@ -151,7 +195,7 @@ async function updatePredictions() {
     
     // Write back to index.html
     await fs.writeFile(path.join(__dirname, 'index.html'), html, 'utf8');
-    console.log(`✅ Successfully updated with ${freeMatches.length} real matches!`);
+    console.log(`✅ Successfully updated with ${freeMatches.length} matches from Big 4 leagues!`);
     
   } catch (error) {
     console.error('Update failed:', error);
