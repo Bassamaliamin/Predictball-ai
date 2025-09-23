@@ -8,46 +8,98 @@
 </head>
 <body>
   <div class="container">
-    <h1>⚡ PredictBall AI</h1>
-    <p class="subheader">Today’s Free Predictions</p>
 
-    <div class="prediction">
-      <h3>1. Liverpool vs Arsenal</h3>
-      <p>🎯 Prediction: Draw (78%)</p>
-      <p>💡 Recommended Bet: BTTS</p>
-      <p>💰 Odds: 3.20 - 3.50</p>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('free')">Free Predictions</button>
+      <button class="tab" onclick="showTab('premium')">Premium Predictions</button>
     </div>
 
-    <div class="prediction">
-      <h3>2. Real Madrid vs Barcelona</h3>
-      <p>🎯 Prediction: Home Win (85%)</p>
-      <p>💡 Recommended Bet: Over 2.5</p>
-      <p>💰 Odds: 2.10 - 2.30</p>
+    <!-- Free Predictions (Default) -->
+    <div id="free" class="tab-content active">
+      <h1>⚡ PredictBall AI</h1>
+      <p class="subheader">Today’s Free Predictions (Max 5)</p>
+
+      <div class="prediction">
+        <h3>1. Liverpool vs Arsenal</h3>
+        <p>🎯 Prediction: Draw (78%)</p>
+        <p>💡 Recommended Bet: BTTS</p>
+        <p>💰 Odds: 3.20 - 3.50</p>
+      </div>
+
+      <div class="prediction">
+        <h3>2. Real Madrid vs Barcelona</h3>
+        <p>🎯 Prediction: Home Win (85%)</p>
+        <p>💡 Recommended Bet: Over 2.5</p>
+        <p>💰 Odds: 2.10 - 2.30</p>
+      </div>
+
+      <div class="prediction">
+        <h3>3. Bayern Munich vs Dortmund</h3>
+        <p>🎯 Prediction: Home Win (82%)</p>
+        <p>💡 Recommended Bet: -1 Handicap</p>
+        <p>💰 Odds: 2.40 - 2.60</p>
+      </div>
+
+      <div class="prediction">
+        <h3>4. PSG vs Marseille</h3>
+        <p>🎯 Prediction: Home Win (79%)</p>
+        <p>💡 Recommended Bet: Over 3.5</p>
+        <p>💰 Odds: 2.80 - 3.10</p>
+      </div>
+
+      <div class="prediction">
+        <h3>5. Juventus vs AC Milan</h3>
+        <p>🎯 Prediction: Away Win (75%)</p>
+        <p>💡 Recommended Bet: Double Chance</p>
+        <p>💰 Odds: 2.90 - 3.20</p>
+      </div>
     </div>
 
-    <div class="prediction">
-      <h3>3. Bayern Munich vs Dortmund</h3>
-      <p>🎯 Prediction: Home Win (82%)</p>
-      <p>💡 Recommended Bet: -1 Handicap</p>
-      <p>💰 Odds: 2.40 - 2.60</p>
+    <!-- Premium Predictions (Hidden by default) -->
+    <div id="premium" class="tab-content">
+      <h1>💎 Premium Predictions</h1>
+      <p class="subheader">Elite AI Picks (Max 3) — Subscribe to Unlock</p>
+
+      <div class="prediction locked">
+        <h3>🔒 Premium Pick 1</h3>
+        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
+        <p>💰 EV Score: +15.2%</p>
+      </div>
+
+      <div class="prediction locked">
+        <h3>🔒 Premium Pick 2</h3>
+        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
+        <p>💰 EV Score: +18.7%</p>
+      </div>
+
+      <div class="prediction locked">
+        <h3>🔒 Premium Pick 3</h3>
+        <p>Subscribe to unlock elite AI predictions with 85%+ accuracy.</p>
+        <p>💰 EV Score: +22.1%</p>
+      </div>
+
+      <button class="subscribe-btn">💳 Subscribe Now — $4.99/week</button>
     </div>
 
-    <div class="prediction">
-      <h3>4. PSG vs Marseille</h3>
-      <p>🎯 Prediction: Home Win (79%)</p>
-      <p>💡 Recommended Bet: Over 3.5</p>
-      <p>💰 Odds: 2.80 - 3.10</p>
-    </div>
-
-    <div class="prediction">
-      <h3>5. Juventus vs AC Milan</h3>
-      <p>🎯 Prediction: Away Win (75%)</p>
-      <p>💡 Recommended Bet: Double Chance</p>
-      <p>💰 Odds: 2.90 - 3.20</p>
-    </div>
-
-    <button class="premium-btn">🔓 Upgrade to Premium</button>
     <p class="footer">Updated: April 5, 2025 • Powered by AI</p>
   </div>
+
+  <script>
+    function showTab(tabName) {
+      // Hide all tab content
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      // Deactivate all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      // Show selected tab content
+      document.getElementById(tabName).classList.add('active');
+      // Activate selected tab button
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>
