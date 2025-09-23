@@ -1,9 +1,9 @@
-// auto-update.js - Runs daily to generate new predictions
+// auto-update.js - Runs daily to generate new predictions WITHOUT breaking design
 
 const fs = require('fs').promises;
 const path = require('path');
 
-// Mock teams and predictions (later: connect to real AI)
+// Mock teams and predictions
 const TEAMS = [
   "Liverpool", "Arsenal", "Man City", "Real Madrid", "Barcelona",
   "Bayern Munich", "PSG", "Juventus", "AC Milan", "Inter",
@@ -45,7 +45,7 @@ function generateHTML(predictions, isPremium = false) {
 }
 
 async function updatePredictions() {
-  const today = new Date().toISOString().split('T')[0]; // e.g. "2025-04-06"
+  const today = new Date().toISOString().split('T')[0];
   
   // Generate 5 free predictions
   const freePredictions = Array.from({ length: 5 }, (_, i) => generatePrediction(i));
@@ -58,7 +58,7 @@ async function updatePredictions() {
   // Read current index.html
   let html = await fs.readFile(path.join(__dirname, 'index.html'), 'utf8');
 
-  // Replace Free Predictions section
+  // Replace Free Predictions section (ONLY CONTENT)
   const freeStart = '<div id="free" class="tab-content active">';
   const freeEnd = '</div> <!-- Free Predictions -->';
   const freeRegex = new RegExp(`${freeStart}[\\s\\S]*?${freeEnd}`);
@@ -69,7 +69,7 @@ async function updatePredictions() {
   ${freeEnd}`;
   html = html.replace(freeRegex, newFreeSection);
 
-  // Replace Premium Predictions section
+  // Replace Premium Predictions section (ONLY CONTENT)
   const premiumStart = '<div id="premium" class="tab-content">';
   const premiumEnd = '</div> <!-- Premium Predictions -->';
   const premiumRegex = new RegExp(`${premiumStart}[\\s\\S]*?${premiumEnd}`);
