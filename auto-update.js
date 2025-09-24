@@ -1,4 +1,4 @@
-// auto-update.js - Fetches ALL matches then filters to Big 4 leagues only
+// auto-update.js - Fetches matches with exact league name matching + debugging
 
 const fs = require('fs').promises;
 const path = require('path');
@@ -6,12 +6,17 @@ const fetch = require('node-fetch');
 
 const BETS = ["Over 2.5", "BTTS", "Double Chance", "Draw or Away", "Handicap -1"];
 
-// Define target leagues
+// Define target leagues with exact names as they appear in API
 const TARGET_LEAGUES = [
   "English Premier League",
   "Spanish La Liga",
   "Italian Serie A", 
-  "German Bundesliga"
+  "German Bundesliga",
+  // Alternative names that might appear in API
+  "Premier League",
+  "La Liga",
+  "Serie A",
+  "Bundesliga"
 ];
 
 function getRandomItem(arr) {
@@ -37,15 +42,26 @@ async function fetchTodayMatches() {
   const today = new Date().toISOString().split('T')[0];
   
   try {
-    // Fetch ALL matches for today
+    console.log(`🔍 Fetching matches for ${today}...`);
+    
     const response = await fetch(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}`);
     const data = await response.json();
     
     if (data.events && data.events.length > 0) {
-      // Filter to only Big 4 leagues
+      console.log(`📊 Total matches found: ${data.events.length}`);
+      
+      // Log all leagues found (for debugging)
+      const allLeagues = [...new Set(data.events.map(game => game.strLeague))];
+      console.log(`📋 All leagues found:`, allLeagues);
+      
+      // Filter to only target leagues (case-insensitive)
       const filteredMatches = data.events.filter(game => 
-        TARGET_LEAGUES.includes(game.strLeague)
+        TARGET_LEAGUES.some(target => 
+          game.strLeague.toLowerCase().includes(target.toLowerCase())
+        )
       );
+      
+      console.log(`🎯 Matches from target leagues: ${filteredMatches.length}`);
       
       if (filteredMatches.length > 0) {
         return filteredMatches.map(game => {
@@ -58,21 +74,25 @@ async function fetchTodayMatches() {
             ...ai
           };
         });
+      } else {
+        console.log("❌ No matches found in target leagues");
       }
+    } else {
+      console.log("❌ No matches found for today at all");
     }
   } catch (error) {
     console.error("API Error:", error);
   }
   
-  // Fallback if no matches from target leagues
-  console.log("No matches from target leagues — using fallback");
+  // Fallback with only target league teams
+  console.log("🔄 Using fallback matches from target leagues");
   return generateFallbackMatches();
 }
 
 function generateFallbackMatches() {
-  // Fallback with Big 4 league teams only
+  // Only teams from your 4 target leagues
   const TEAMS = [
-    // EPL
+    // English Premier League
     { name: "Arsenal", league: "English Premier League" },
     { name: "Liverpool", league: "English Premier League" },
     { name: "Chelsea", league: "English Premier League" },
@@ -81,26 +101,38 @@ function generateFallbackMatches() {
     { name: "Tottenham", league: "English Premier League" },
     { name: "Newcastle", league: "English Premier League" },
     { name: "Aston Villa", league: "English Premier League" },
+    { name: "Brighton", league: "English Premier League" },
+    { name: "West Ham", league: "English Premier League" },
     
-    // La Liga
+    // Spanish La Liga
     { name: "Real Madrid", league: "Spanish La Liga" },
     { name: "Barcelona", league: "Spanish La Liga" },
     { name: "Atletico Madrid", league: "Spanish La Liga" },
     { name: "Real Sociedad", league: "Spanish La Liga" },
     { name: "Villarreal", league: "Spanish La Liga" },
+    { name: "Real Betis", league: "Spanish La Liga" },
+    { name: "Osasuna", league: "Spanish La Liga" },
+    { name: "Girona", league: "Spanish La Liga" },
     
-    // Serie A
+    // Italian Serie A
     { name: "Juventus", league: "Italian Serie A" },
     { name: "AC Milan", league: "Italian Serie A" },
     { name: "Inter Milan", league: "Italian Serie A" },
     { name: "Napoli", league: "Italian Serie A" },
     { name: "Roma", league: "Italian Serie A" },
+    { name: "Lazio", league: "Italian Serie A" },
+    { name: "Atalanta", league: "Italian Serie A" },
+    { name: "Fiorentina", league: "Italian Serie A" },
     
-    // Bundesliga
+    // German Bundesliga
     { name: "Bayern Munich", league: "German Bundesliga" },
     { name: "Dortmund", league: "German Bundesliga" },
     { name: "Leipzig", league: "German Bundesliga" },
-    { name: "Leverkusen", league: "German Bundesliga" }
+    { name: "Leverkusen", league: "German Bundesliga" },
+    { name: "Wolfsburg", league: "German Bundesliga" },
+    { name: "Frankfurt", league: "German Bundesliga" },
+    { name: "Union Berlin", league: "German Bundesliga" },
+    { name: "Stuttgart", league: "German Bundesliga" }
   ];
   
   let matches = [];
@@ -161,7 +193,7 @@ async function updatePredictions() {
     // Read index.html
     let html = await fs.readFile(path.join(__dirname, 'index.html'), 'utf8');
     
-    // Fetch and filter matches to Big 4 leagues only
+    // Fetch matches with exact filtering
     const allMatches = await fetchTodayMatches();
     const freeMatches = allMatches.slice(0, 10);
     const premiumMatches = [...allMatches];
@@ -194,7 +226,7 @@ async function updatePredictions() {
     
     // Write back to index.html
     await fs.writeFile(path.join(__dirname, 'index.html'), html, 'utf8');
-    console.log(`✅ Successfully updated with ${freeMatches.length} matches from Big 4 leagues!`);
+    console.log(`✅ Successfully updated with ${freeMatches.length} matches from target leagues!`);
     
   } catch (error) {
     console.error('Update failed:', error);
